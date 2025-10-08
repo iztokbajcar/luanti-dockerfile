@@ -34,7 +34,7 @@ jobs:
           if [ -n "${{github.event.inputs.version}}" ]; then
             echo "Using the provided version"
             BUILD_VERSION="${{github.event.inputs.version}}"
-            IMAGE_TAG_NAME="$PROVIDED_VERSION"
+            IMAGE_TAG_NAME="$BUILD_VERSION"
           else
             echo "Using latest version"
             LATEST_TAG=$(curl -sL https://api.github.com/repos/luanti-org/luanti/releases/latest | jq -r '.tag_name')
