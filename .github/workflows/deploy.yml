@@ -29,7 +29,7 @@ jobs:
         run: |
           IMAGE_TAG_NAME=latest
           if [ -n "${{github.events.inputs.version}}" ]; then
-            PROVIDED_VERSION="${{github.events.inputs.version}}
+            PROVIDED_VERSION="${{github.events.inputs.version}}"
             IMAGE_TAG_NAME="$PROVIDED_VERSION"
             echo "version=$PROVIDED_VERSION" >> $GITHUB_OUTPUT
           else
