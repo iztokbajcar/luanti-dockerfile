@@ -6,7 +6,7 @@ ARG VERSION
 RUN apk add build-base cmake libpng-dev jpeg-dev mesa-dev sqlite-dev libogg-dev libvorbis-dev openal-soft-dev curl-dev freetype-dev zlib-dev gmp-dev jsoncpp-dev luajit-dev zstd-dev gettext sdl2-dev
 
 # download and extract engine source
-RUN wget -O /luanti.tar.gz https://github.com/luanti-org/luanti/archive/ref/tags/${VERSION}.tar.gz && tar -xf luanti.tar.gz && mv luanti-${VERSION} ./luanti && rm luanti.tar.gz
+RUN wget -O /luanti.tar.gz https://github.com/luanti-org/luanti/archive/refs/tags/${VERSION}.tar.gz && tar -xf luanti.tar.gz && mv luanti-${VERSION} ./luanti && rm luanti.tar.gz
 
 # build
 WORKDIR /luanti
