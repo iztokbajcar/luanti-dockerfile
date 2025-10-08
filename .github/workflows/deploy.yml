@@ -28,15 +28,20 @@ jobs:
         id: version
         run: |
           IMAGE_TAG_NAME=latest
+          BUILD_VERSION=""
           if [ -n "${{github.events.inputs.version}}" ]; then
-            PROVIDED_VERSION="${{github.events.inputs.version}}"
+            BUILD_VERSION="${{github.events.inputs.version}}"
             IMAGE_TAG_NAME="$PROVIDED_VERSION"
-            echo "version=$PROVIDED_VERSION" >> $GITHUB_OUTPUT
           else
             LATEST_TAG=$(curl -sL https://api.github.com/repos/luanti-org/luanti/releases/latest | jq -r '.tag_name')
+            BUILD_VERSION="$LATEST_TAG"
             echo "version=$LATEST_TAG" >> $GITHUB_OUTPUT
           fi
 
+          echo "Will build version $BUILD_VERSION"
+          echo "Tag: $IMAGE_TAG_NAME"
+
+          echo "version=$BUILD_VERSION" >> $GITHUB_OUTPUT
           echo "image_tag_name=$IMAGE_TAG_NAME" >> $GITHUB_OUTPUT
 
       - name: 'Build and push image'
