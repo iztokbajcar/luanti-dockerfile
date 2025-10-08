@@ -5,8 +5,8 @@ on:
     inputs:
       version:
         description: "Luanti version"
-        required: true
-        default: "5.14.0"
+        required: false
+        default: "latest"
   push:
     branches:
       - main
@@ -24,8 +24,23 @@ jobs:
           username: ${{github.actor}}
           password: ${{secrets.ACCESS_TOKEN}}
 
+      - name: 'Determine Luanti version to build'
+        id: version
+        run: |
+          IMAGE_TAG_NAME=latest
+          if [ -n "${{github.events.inputs.version}}" ]; then
+            PROVIDED_VERSION="${{github.events.inputs.version}}
+            IMAGE_TAG_NAME="$PROVIDED_VERSION"
+            echo "version=$PROVIDED_VERSION" >> $GITHUB_OUTPUT
+          else
+            LATEST_TAG=$(curl -sL https://api.github.com/repos/luanti-org/luanti/releases/latest | jq -r '.tag_name')
+            echo "version=$LATEST_TAG" >> $GITHUB_OUTPUT
+          fi
+
+          echo "image_tag_name=$IMAGE_TAG_NAME" >> $GITHUB_OUTPUT
+
       - name: 'Build and push image'
         run: |
-          docker build --build-arg VERSION=${{github.event.inputs.version}} --tag ghcr.io/iztokbajcar/luanti:${{github.event.inputs.version}} .
-          docker push ghcr.io/iztokbajcar/luanti:${{github.events.inputs.version}}
+          docker build --build-arg VERSION=${{steps.version.outputs.version}} --tag ghcr.io/iztokbajcar/luanti:${{steps.version.outputs.image_tag_name}} .
+          docker push ghcr.io/iztokbajcar/luanti:${{steps.version.outputs.image_tag_name}}
 

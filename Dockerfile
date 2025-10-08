@@ -1,6 +1,6 @@
 FROM alpine:3 AS build
 
-ARG VERSION=5.14.0
+ARG VERSION
 
 # install dependencies
 RUN apk add build-base cmake libpng-dev jpeg-dev mesa-dev sqlite-dev libogg-dev libvorbis-dev openal-soft-dev curl-dev freetype-dev zlib-dev gmp-dev jsoncpp-dev luajit-dev zstd-dev gettext sdl2-dev
