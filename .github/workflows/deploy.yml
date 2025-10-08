@@ -29,9 +29,11 @@ jobs:
         run: |
           IMAGE_TAG_NAME=latest
           BUILD_VERSION=""
-          if [ -n "${{github.events.inputs.version}}" ]; then
-            echo "Version provided: $PROVIDED_VERSION"
-            BUILD_VERSION="${{github.events.inputs.version}}"
+          echo "Version provided: $PROVIDED_VERSION"
+
+          if [ -n "${{github.event.inputs.version}}" ]; then
+            echo "Using the provided version"
+            BUILD_VERSION="${{github.event.inputs.version}}"
             IMAGE_TAG_NAME="$PROVIDED_VERSION"
           else
             echo "Using latest version"
