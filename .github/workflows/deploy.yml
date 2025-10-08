@@ -1,6 +1,12 @@
 name: Deploy Docker image to GHCR
 
 on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Luanti version"
+        required: true
+        default: "5.14"
   push:
     branches:
       - main
@@ -20,6 +26,6 @@ jobs:
 
       - name: 'Build and push image'
         run: |
-          docker build . --tag ghcr.io/iztokbajcar/luanti:latest
-          docker push ghcr.io/iztokbajcar/luanti:latest
+          docker build --build-arg VERSION=${{github.event.inputs.version}} --tag ghcr.io/iztokbajcar/luanti:${{github.event.inputs.version}} .
+          docker push ghcr.io/iztokbajcar/luanti:${{github.events.inputs.version}}
 

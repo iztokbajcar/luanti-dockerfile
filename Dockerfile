@@ -1,10 +1,12 @@
 FROM alpine:3 AS build
 
+ARG VERSION
+
 # install dependencies
 RUN apk add build-base cmake libpng-dev jpeg-dev mesa-dev sqlite-dev libogg-dev libvorbis-dev openal-soft-dev curl-dev freetype-dev zlib-dev gmp-dev jsoncpp-dev luajit-dev zstd-dev gettext sdl2-dev
 
 # download and extract engine source
-RUN wget https://github.com/luanti-org/luanti/archive/master.tar.gz && tar -xf master.tar.gz && mv luanti-master ./luanti && rm master.tar.gz
+RUN wget -O /luanti.tar.gz https://github.com/luanti-org/luanti/archive/ref/tags/${VERSION}.tar.gz && tar -xf luanti.tar.gz && mv luanti-${VERSION} ./luanti && rm luanti.tar.gz
 
 # build
 WORKDIR /luanti
